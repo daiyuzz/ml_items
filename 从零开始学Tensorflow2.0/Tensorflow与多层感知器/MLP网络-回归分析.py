@@ -15,7 +15,7 @@ model = keras.Sequential([
     layers.Dense(1)
 ])
 
-# 使用密集连接层高构建模型
+# 使用密集连接层类构建模型
 model.compile(optimizer=keras.optimizers.SGD(0.1),
               loss='mean_squared_error',
               metrics=['mse'])
