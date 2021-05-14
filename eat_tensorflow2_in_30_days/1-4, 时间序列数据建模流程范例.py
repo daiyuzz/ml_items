@@ -14,8 +14,13 @@ from tensorflow.keras import models,layers,losses,metrics,callbacks
 df = pd.read_csv('./data/covid-19.csv',sep="\t")
 df.plot(x="date",y=["confirmed_num","cured_num","dead_num"],figsize=(10,6))
 plt.xticks(rotation=60)
-plt.show()
+# plt.show()
 
 dfdata = df.set_index("date")
-dfdiff = dfdata.diff(periods=1).dropna() # 用于查找同一系列元素之间的差异,periods=1,即当前元素和前一个比较
+dfdiff = dfdata.diff(periods=1).dropna() # 用于查找同一系列元素之间的差异,periods=1,即当前元素和前一个比较;dropna()是移除NA
+
 dfdiff = dfdiff.reset_index("date")
+
+dfdiff.plot(x="date",y=["confirmed_num","cured_num","dead_num"],figsize=(10,6))
+plt.xticks(rotation=60)
+plt.show()
