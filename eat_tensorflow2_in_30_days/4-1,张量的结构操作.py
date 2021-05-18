@@ -80,3 +80,68 @@ tf.print(t)
 #  [0 2 0]
 #  [0 0 3]]
 
+
+
+# 二、索引切片
+
+tf.random.set_seed(3)
+t = tf.random.uniform([5,5],minval=0,maxval=10,dtype=tf.int32)
+tf.print(t)
+
+# [[4 7 4 2 9]
+#  [9 1 2 4 7]
+#  [7 2 7 4 0]
+#  [9 6 9 7 2]
+#  [3 7 0 0 3]]
+
+# 第0行
+tf.print(t[0])
+# [4 7 4 2 9]
+
+# 倒数第一行
+tf.print(t[-1])
+# [3 7 0 0 3]
+
+# 第1行第3列
+tf.print(t[1,3])
+# 4
+tf.print(t[1][3])
+# 4
+
+# 第一行至第三行
+tf.print(t[1:4,:])
+tf.print(tf.slice(t,[1,0],[3,5])) # tf.slice(input,begin_vector,size_vector)
+# [[9 1 2 4 7]
+#  [7 2 7 4 0]
+#  [9 6 9 7 2]]
+
+# 第一行至最后一行，第0列到最后一列每隔两列取一列
+tf.print(t[1:4,:4:2])
+# [[9 2]
+#  [7 7]
+#  [9 9]]
+
+# 对变量来说，还可以使用索引和切片修改部分元素
+x = tf.Variable([[1,2],[3,4]],dtype=tf.float32)
+x[1,:].assign(tf.constant([0.0,0.0]))
+tf.print(x)
+# [[1 2]
+#  [0 0]]
+
+a = tf.random.uniform([3,3,3],minval=0,maxval=10,dtype=tf.int32)
+tf.print(a)
+# [[[7 3 9]
+#   [9 0 7]
+#   [9 6 7]]
+#  [[1 3 3]
+#   [0 8 1]
+#   [3 1 0]]
+#  [[4 0 6]
+#   [6 2 2]
+#   [7 9 5]]]
+
+tf.print(a[...,1])
+# [[3 0 6]
+#  [3 8 1]
+#  [0 2 9]]
+
