@@ -118,3 +118,54 @@ import numpy as np
 # inpath:原始数据路径  outpath:TFRecord文件输出路径
 def create_tfrecords(inpath, outpath):
     writer = tf.io.TFRecordWriter(outpath)
+
+
+## 应用数据转换
+
+ds = tf.data.Dataset.from_tensor_slices(["hello world", "hello china", "hello beijing"])
+ds_map = ds.map(lambda x: tf.strings.split(x, " "))
+for x in ds_map:
+    print(x)
+
+# tf.Tensor([b'hello' b'world'], shape=(2,), dtype=string)
+# tf.Tensor([b'hello' b'china'], shape=(2,), dtype=string)
+# tf.Tensor([b'hello' b'beijing'], shape=(2,), dtype=string)
+
+ds = tf.data.Dataset.from_tensor_slices(["hello world", "hello china", "hello beijing"])
+ds_flatmap = ds.flat_map(lambda x: tf.data.Dataset.from_tensor_slices(tf.strings.split(x, ' ')))
+for x in ds_flatmap:
+    print(x)
+
+# tf.Tensor(b'hello', shape=(), dtype=string)
+# tf.Tensor(b'world', shape=(), dtype=string)
+# tf.Tensor(b'hello', shape=(), dtype=string)
+# tf.Tensor(b'china', shape=(), dtype=string)
+# tf.Tensor(b'hello', shape=(), dtype=string)
+# tf.Tensor(b'beijing', shape=(), dtype=string)
+
+
+# interleave：效果类似 flat_map,但可以将不同来源的数据夹在一起
+
+ds = tf.data.Dataset.from_tensor_slices(["hello world", "hello china", "hello Beijing"])
+ds_interleave = ds.interleave(lambda x: tf.data.Dataset.from_tensor_slices(tf.strings.split(x, " ")))
+for x in ds_interleave:
+    print(x)
+# tf.Tensor(b'hello', shape=(), dtype=string)
+# tf.Tensor(b'hello', shape=(), dtype=string)
+# tf.Tensor(b'hello', shape=(), dtype=string)
+# tf.Tensor(b'world', shape=(), dtype=string)
+# tf.Tensor(b'china', shape=(), dtype=string)
+# tf.Tensor(b'Beijing', shape=(), dtype=string)
+
+
+# filter 过滤掉某些元素
+ds = tf.data.Dataset.from_tensor_slices(["hello world","hello china","hello Beijing"])
+# 找出含有字母a或字母B的元素
+ds_filter = ds.filter(lambda x:tf.strings.regex_full_match(x,".*[a|B].*"))
+for x in ds_filter:
+    print(x)
+# tf.Tensor(b'hello china', shape=(), dtype=string)
+# tf.Tensor(b'hello Beijing', shape=(), dtype=string)
+
+
+
