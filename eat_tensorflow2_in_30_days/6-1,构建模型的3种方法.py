@@ -114,3 +114,4 @@ model.compile(optimizer='Nadam',
             metrics=['accuracy',"AUC"])
 
 model.summary()
+
