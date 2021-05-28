@@ -9,6 +9,7 @@
 
 import tensorflow as tf
 
+
 # 打印时间分割线
 @tf.function
 def printbar():
@@ -29,8 +30,6 @@ def printbar():
     tf.print("==========" * 8 + timestring)
 
 
-
-
 """
 # 线性回归模型
 """
@@ -46,22 +45,38 @@ import tensorflow as tf
 n = 400
 
 # 生成测试用数据集
-X = tf.random.uniform([n,2],minval=-10,maxval=10)
-w0 = tf.constant([[2.0],[-3.0]])
+X = tf.random.uniform([n, 2], minval=-10, maxval=10)
+w0 = tf.constant([[2.0], [-3.0]])
 b0 = tf.constant([[3.0]])
-Y = X@w0 + b0 + tf.random.normal([n,1],mean=0.0,stddev=2.0) # @表示矩阵乘法，增加正态扰动
-
+Y = X @ w0 + b0 + tf.random.normal([n, 1], mean=0.0, stddev=2.0)  # @表示矩阵乘法，增加正态扰动
 
 # 数据可视化
-plt.figure(figsize=(12,5))
-ax1 = plt.subplot(121)
-ax1.scatter(X[:,0],Y[:,0],c="b")
+plt.figure(figsize=(12, 5))
+ax1 = plt.subplot(121)  # 子图1行2列第一个图
+ax1.scatter(X[:, 0], Y[:, 0], c="b")
 plt.xlabel("x1")
-plt.ylabel("y",rotation=0)
+plt.ylabel("y", rotation=0)
 
-ax2 = plt.subplot(122)
-ax2.scatter(X[:,1],Y[:,0],c="g")
+ax2 = plt.subplot(122)  # 子图1行2列
+ax2.scatter(X[:, 1], Y[:, 0], c="g")
 plt.xlabel("x2")
-plt.ylabel("y",rotation=0)
+plt.ylabel("y", rotation=0)
 
 plt.show()
+
+
+# 构建数据管道
+
+def data_iter(features, labels, batch_size=8):
+    num_examples = len(features)
+    indices = list(range(num_examples))
+    np.random.shuffle(indices)
+    for i in range(0, num_examples, batch_size):
+        indexs = indices[i:min(i + batch_size, num_examples)]
+        yield tf.gather(features, indexs), tf.gather(labels, indexs)
+
+# 测试数据管道效果
+batch_size = 8
+(features,labels) = next(data_iter(X,Y,batch_size))
+print(features)
+print(labels)
