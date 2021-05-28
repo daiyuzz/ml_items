@@ -24,3 +24,17 @@ dy_dx = tape.gradient(y,x)
 print(dy_dx)
 # tf.Tensor(-2.0, shape=(), dtype=float32)
 
+
+#对常量张量也可以求导，需要增加watch
+
+with tf.GradientTape() as tape:
+    tape.watch([a,b,c])
+    y = a*tf.pow(x,2) + b*x + c
+
+dy_dx,dy_da,dy_d,dy_dc = tape.gradient(y,[x,a,b,c])
+print(dy_da)
+# tf.Tensor(0.0, shape=(), dtype=float32)
+print(dy_dc)
+# tf.Tensor(1.0, shape=(), dtype=float32)
+
+
