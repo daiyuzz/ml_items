@@ -184,3 +184,21 @@ plt.xlabel("x2")
 plt.ylabel("y", rotation=0)
 
 plt.show()
+
+
+
+
+## 二、DNN二分类模型
+
+# 1.准备数据
+import numpy as np
+import pandas as pd
+from matplotlib import pyplot as plt
+import tensorflow as tf
+
+# 正负样本数量
+n_positive,n_negative = 2000,2000
+
+# 生成正样本，小圆环分布
+r_p= 5.0 + tf.random.truncated_normal([n_positive],0.0,1.0)
+theta_p = tf.random.uniform()
